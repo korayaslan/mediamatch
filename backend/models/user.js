@@ -31,11 +31,7 @@ const userSchema = new Schema({
     desc:{
         type:String,
         required: false,
-    },
-    password:{
-        type:Boolean,
-        default: false,
-    },
+    }
 }, {
     timestamps:true
 });
