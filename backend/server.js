@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
@@ -17,15 +18,24 @@ const connect = async () => {
     }
 };
 
+// Middlewares
 app.use(express.json());
+app.use(cookieParser());
+
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 
+
+app.use((err, req, res, next) =>{
+    const errorStatus = err.status || 500;
+    const errorMessage = err.message || "Error";
+
+    return res.status(errorStatus).send(errorMessage);
+});
+
+
 app.listen(8800, () => {
     connect();
     console.log("Server is running!");
-})
-
-// DB
-// emirasal - 8AmKtFIyjO2LhonW
+});

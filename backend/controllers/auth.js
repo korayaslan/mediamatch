@@ -1,7 +1,9 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import createError from "../utils/createError.js";
 
-export const register = async (req, res) =>{
+export const register = async (req, res, next) =>{
     
     try {
         const hashhedPassword = await bcrypt.hash(req.body.password, 7);
@@ -14,33 +16,46 @@ export const register = async (req, res) =>{
         res.status(201).send("User has been created.");
 
     } catch(err) {
-        res.status(500).send("Errror.");
+        next(err);
     }
 } 
 
-export const login = async (req, res) =>{
+export const login = async (req, res, next) =>{
+    
+    try {
+       const user = await User.findOne({username:req.body.username});
     
 
-       const user = await User.findOne({username:req.body.username});
-       
-       if (!user) return res.status(404).send("No such user.");
+       if (!user) return next(createError(404, "No such user"));
 
         const isCorrect = bcrypt.compareSync(req.body.password, user.password);
-        if (!isCorrect) return res.status(400).send("Wrong password");
+        if (!isCorrect) next(createError(400, "Wrong credidentials."));
+
+
+        const token = jwt.sign({
+            id:user._id, 
+            isSeller: user.isSeller,
+        }, process.env.JWT_KEY
+        );
 
         const {password, ...info} = user._doc;
-        res.status(200).send(info);
+        res.cookie("accessToken", token, {
+            httpOnly: true
+        }).status(200).send(info);
 
-
-        res.status(500).send("Errror.");
-
+    } catch(err){
+            next(err);
+        }
 }
 
 export const logout = async (req, res) =>{
     
     try {
-        
+        res.clearCookie("accessToken", {
+            sameSite:"none",
+            secure: true,
+        }).status(200).send("User is logged out.");
     } catch(err) {
-        res.status(500).send("Errror.");
+        next(err);
     }
 }

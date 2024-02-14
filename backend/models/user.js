@@ -31,6 +31,10 @@ const userSchema = new Schema({
     desc:{
         type:String,
         required: false,
+    },
+    isSeller:{
+        type:Boolean,
+        default: false,       
     }
 }, {
     timestamps:true
