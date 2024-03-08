@@ -29,7 +29,7 @@ function Home() {
           <div className="feature-card">
             <img src="./img/satisfaction.png" alt="100% satisfaction" className="feature-icon" />
             <h2 className="feature-card-title">100% satisfaction</h2>
-            <p>Using our secured marketplace, you will always be "matched" with satisfying services</p>
+            <p>You will always be matched with satisfying services</p>
           </div>
         </div>
         
