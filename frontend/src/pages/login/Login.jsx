@@ -29,7 +29,6 @@ function Login() {
         <input
           name="username"
           type="text"
-          placeholder="johndoe"
           onChange={(e) => setUsername(e.target.value)}
         />
 

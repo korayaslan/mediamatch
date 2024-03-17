@@ -1,62 +1,85 @@
 import React from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import newRequest from "../../utils/newRequest";
 
 function Gig() {
+
+  const {id} = useParams();
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["gig"],
+    queryFn: () =>
+      newRequest.get(`/gig/getGig/${id}`).then((res) => {
+        return res.data;
+      }),
+  });
+
+  const { isLoading: isLoadingUser, error: errorUser, data: dataUser } = useQuery({
+    queryKey: ["user"],
+    queryFn: () =>
+      newRequest.get(`/user/${data.userId}`).then((res) => {
+        return res.data;
+      }),
+  });
+
   return (
     <div className="gig">
-      <div className="container">
+      {isLoading ? "loading" : error ? "Something went wrong." : <div className="container">
         <div className="left">
-          <span className="breadcrumbs">Liverr > Graphics & Design ></span>
-          <h1>I will create a thumbnail for you</h1>
-          <div className="user">
+          <span className="breadcrumbs">Liverr {">"} Graphics & Design {">"}</span>
+          <h1>{data.title}</h1>
+          {isLoadingUser ? "loading" : errorUser ? "Something went wrong" : <div className="user">
             <img
               className="pp"
-              src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              src={dataUser.img || "/img/noavatar.jpg"}
               alt=""
             />
-            <span>Anna Bell</span>
-            <div className="stars">
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <span>5</span>
-            </div>
-          </div>
+            <span>{dataUser.username}</span>
+            {!isNaN(data.totalStars / data.starNumber) && (
+                  <div className="stars">
+                    {Array(Math.round(data.totalStars / data.starNumber))
+                      .fill()
+                      .map((item, i) => (
+                        <img src="/img/star.png" alt="" key={i} />
+                      ))}
+                    <span>{Math.round(data.totalStars / data.starNumber)}</span>
+                  </div>
+                )}
+          </div>}
           <Slider slidesToShow={1} arrowsScroll={1} className="slider">
-            <img
-              src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            {data.images.map(img => (
+              <img
+              key={img}
+              src={img}
               alt=""
             />
-            <img
-              src="https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-            />
-            <img
-              src="https://images.pexels.com/photos/1054777/pexels-photo-1054777.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-            />
+            ))}
           </Slider>
-          
-          <div className="seller">
+          <p>
+            {data.desc}
+          </p>
+          {isLoadingUser ? "loading" : errorUser ? "Something went wrong" : <div className="seller">
             <h2>About The Seller</h2>
             <div className="user">
               <img
-                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={dataUser.img || "/img/noavatar.jpg"}
                 alt=""
               />
               <div className="info">
-                <span>Anna Bell</span>
-                <div className="stars">
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <span>5</span>
-                </div>
+                <span>{dataUser.username}</span>
+                {!isNaN(data.totalStars / data.starNumber) && (
+                  <div className="stars">
+                    {Array(Math.round(data.totalStars / data.starNumber))
+                      .fill()
+                      .map((item, i) => (
+                        <img src="/img/star.png" alt="" key={i} />
+                      ))}
+                    <span>{Math.round(data.totalStars / data.starNumber)}</span>
+                  </div>
+                )}
                 <button>Contact Me</button>
               </div>
             </div>
@@ -64,7 +87,7 @@ function Gig() {
               <div className="items">
                 <div className="item">
                   <span className="title">From</span>
-                  <span className="desc">USA</span>
+                  <span className="desc">{dataUser.country}</span>
                 </div>
                 <div className="item">
                   <span className="title">Member since</span>
@@ -85,10 +108,10 @@ function Gig() {
               </div>
               <hr />
               <p>
-                My name is Anna, I have worked with big Youtubers.
+                {dataUser.desc}
               </p>
             </div>
-          </div>
+          </div>}
           <div className="reviews">
             <h2>Reviews</h2>
             <div className="item">
@@ -221,46 +244,38 @@ function Gig() {
         <div className="right">
         <h2>About This Service</h2>
           <p>
-            I have worked with many big Youtbers like MrBeast, Pewdiepie. 
-            I can create a stunning thumbnail using Adobe Photoshop
-
+           {data.desc}
           </p>
           <div className="price">
-            <h3>1 Youtube Thumbnail</h3>
-            <h2>$ 29.99</h2>
+            <h3>{data.shortTitle}</h3>
+            <h2>$ {data.price}</h2>
           </div>
+          <p>
+            {data.shortDesc}
+          </p>
           <div className="details">
   <div className="card item">
     <img src="/img/clock.png" alt="" />
-    <span>2 Days Delivery</span>
+    <span>{data.deliveryDate} Days Delivery</span>
   </div>
   <div className="card item">
     <img src="/img/recycle.png" alt="" />
-    <span>3 Revisions</span>
+    <span>{data.revisionNumber} Revisions</span>
   </div>
 </div>
 <div className="features">
-  <div className="card item">
-    <img src="/img/bluecheckmark.png" alt="" />
-    <span>Thumbnail ideas</span>
-  </div>
-  <div className="card item">
-    <img src="/img/bluecheckmark.png" alt="" />
-    <span>Template file</span>
-  </div>
-  <div className="card item">
-    <img src="/img/bluecheckmark.png" alt="" />
-    <span>Long term</span>
-  </div>
-  <div className="card item">
-    <img src="/img/bluecheckmark.png" alt="" />
-    <span>Additional design</span>
-  </div>
+  {data.features.map(feature => (
+    <div className="card item" key="feature">
+      <img src="/img/bluecheckmark.png" alt="" />
+      <span>{feature}</span>
+   </div>
+  ))}
+
 </div>
 
           <button>Continue</button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

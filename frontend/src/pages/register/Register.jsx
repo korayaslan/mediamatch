@@ -29,7 +29,7 @@ function Register() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("buttttton presssssssed");
 
     try {
       await newRequest.post("/auth/register", {
@@ -49,7 +49,6 @@ function Register() {
           <input
             name="username"
             type="text"
-            placeholder="johndoe"
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>

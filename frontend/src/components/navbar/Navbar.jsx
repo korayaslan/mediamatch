@@ -47,7 +47,7 @@ function Navbar() {
         </div>
         <div className="links">
           <span>MediaMatch Business</span>
-          <span>Explore</span>
+          <Link to="/gigs" className="link">Explore</Link>
           <span>English</span>
           {!currentUser?.isSeller && <span>Sell your service </span>}
           {currentUser ? (
@@ -81,7 +81,7 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <span>Sign in</span>
+              <Link to="/login" className="link">Sign in</Link>
               <Link className="link" to="/register">
                 <button>Sign Up</button>
               </Link>
