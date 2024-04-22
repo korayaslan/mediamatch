@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
-    JobId:{
+    gigId:{
         type:String,
         required: true,
     },
