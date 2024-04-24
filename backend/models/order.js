@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-    JobId:{
+    gigId:{
         type:String,
         required: true,
     },
@@ -29,10 +29,6 @@ const orderSchema = new Schema({
     isCompleted:{
         type:Boolean,
         default: false,
-    },
-    payment_intent:{
-        type:String,
-        required: true,
     },
 }, {
     timestamps:true

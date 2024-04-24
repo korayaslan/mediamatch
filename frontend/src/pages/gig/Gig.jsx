@@ -6,9 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import Reviews from "../../components/reviews/Reviews";
 
+
 function Gig() {
 
   const {id} = useParams();
+
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["gig"],
@@ -26,6 +28,35 @@ function Gig() {
         return res.data;
       }),
   });
+
+
+
+  const onContinueClick = async () => {
+
+    try {
+      const response = await fetch(`http://localhost:8800/backend/orders/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any additional headers if needed
+      },
+      // If you need to send any data in the request body, you can do so here
+      body: JSON.stringify({
+        // Your request body data here, if any
+      }),
+      credentials: 'include', // Include cookies with the request
+    });
+
+      if (!response.ok) {
+        console.error('Failed');
+      }
+      
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error('Error:', error);
+    }
+
+  };
 
   return (
     <div className="gig">
@@ -148,7 +179,7 @@ function Gig() {
 
 </div>
 
-          <button>Continue</button>
+          <a href="/orders"><button onClick={onContinueClick}>Continue</button></a>
         </div>
       </div>}
     </div>

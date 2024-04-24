@@ -7,6 +7,8 @@ import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
 import gigRoute from "./routes/gig.js";
 import reviewRoute from "./routes/review.js";
+import orderRoute from "./routes/order.js"; 
+
 import cors from "cors";
  
 const app = express()
@@ -31,6 +33,7 @@ app.use("/backend/auth", authRoute);
 app.use("/backend/user", userRoute);
 app.use("/backend/gig", gigRoute);
 app.use("/backend/reviews", reviewRoute);
+app.use("/backend/orders", orderRoute);
 
 
 app.use((err, req, res, next) =>{
