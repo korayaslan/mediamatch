@@ -12,8 +12,6 @@ function MyGigs() {
     queryKey: ["myGigs"],
     queryFn: () =>
       newRequest.get(`gig/getGigs?userId=${currentUser._id}`).then((res) => {
-        console.log(res.data);
-        console.log(currentUser._id);
         return res.data;
       }),
   });
