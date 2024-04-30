@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Featured.scss";
 
+
 function Featured() {
+  
+  const [input, setInput] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate(`/gigs?search=${input}`);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="featured">
       <div className="container">
@@ -12,9 +28,14 @@ function Featured() {
           <div className="search">
             <div className="searchInput">
               <img src="./img/search.png" alt="" />
-              <input type="text" placeholder='Try "video editor"' />
+              <input 
+                type="text" 
+                placeholder='Try "video editor"' 
+                onChange={(e) => setInput(e.target.value)} 
+                onKeyPress={handleKeyPress} 
+              />
             </div>
-            <button>Search</button>
+            <button onClick={handleSubmit}>Search</button>
           </div>
           
         </div>

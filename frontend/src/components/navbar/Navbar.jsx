@@ -20,7 +20,6 @@ function Navbar() {
     };
   }, []);
 
-   //const currentUser = null
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -41,14 +40,14 @@ function Navbar() {
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
-            <span className="text">MediaMatch</span>
+            <span className="text" >MediaMatch</span>
           </Link>
           
         </div>
         <div className="links">
           <span>MediaMatch Business</span>
           <Link to="/gigs" className="link">Explore</Link>
-          <span>English</span>
+          
           {!currentUser?.isSeller && <span>Sell your service </span>}
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
