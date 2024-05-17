@@ -8,6 +8,8 @@ import authRoute from "./routes/auth.js";
 import gigRoute from "./routes/gig.js";
 import reviewRoute from "./routes/review.js";
 import orderRoute from "./routes/order.js"; 
+import conversationRoute from "./routes/conversation.js";
+import messageRoute from "./routes/message.js";
 
 import cors from "cors";
  
@@ -34,6 +36,8 @@ app.use("/backend/user", userRoute);
 app.use("/backend/gig", gigRoute);
 app.use("/backend/reviews", reviewRoute);
 app.use("/backend/orders", orderRoute);
+app.use("/backend/conversations", conversationRoute);
+app.use("/backend/messages", messageRoute);
 
 
 app.use((err, req, res, next) =>{
