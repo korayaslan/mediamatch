@@ -4,7 +4,6 @@ import Gig from "../models/gig.js";
 
 export const createOrder = async (req, res, next) => {
     try {
-
         const gig = await Gig.findById(req.params.gigId);
 
         const newOrder = new Order({
