@@ -14,10 +14,10 @@ const Add = () => {
     mutationFn: (gig) => {
       return newRequest.post("/gig/create", gig);
     },
-    onSuccess: () => {
+    onSuccess: () => { 
       queryClient.invalidateQueries(["myGigs"]);
       navigate("/mygigs");
-      // Alternatively, you can reload the page
+      // Alternatively, you can reload the page 
       // window.location.reload();
     },
     onError: (error) => {
