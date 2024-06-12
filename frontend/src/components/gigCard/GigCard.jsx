@@ -20,7 +20,7 @@ const GigCard = ({ item }) => {
   return (
     <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
-        <img src={item.cover} alt="" />
+        <img src={item.coverImage} alt="" />
         <div className="info">
         {isLoading ? (
             "loading"
